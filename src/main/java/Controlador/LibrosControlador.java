@@ -75,6 +75,32 @@ public class LibrosControlador {
 
     }
     
-    
+      public ArrayList<Object[]> buscarPorNombre(String Nombre) {
+        ArrayList<Object[]> listaTotalLibros = new ArrayList<>();
+        try {
+            String SQL = "call bibliotecavisual.BuscarLibroPorNombre('" + Nombre + "');";
+            ejecutar = (PreparedStatement) conectado.prepareCall(SQL);
+            ResultSet res = ejecutar.executeQuery();
+            while (res.next()) {
+
+                Object[] fila = new Object[11];
+                for (int i = 0; i < 11; i++) {
+                    fila[i] = res.getObject(i + 1);
+
+                }
+                //fila[0] = cont;
+                listaTotalLibros.add(fila);
+                //cont++;
+            }
+
+            ejecutar.close();
+            return listaTotalLibros;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return null;
+
+    }
     
 }

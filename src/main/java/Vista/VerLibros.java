@@ -69,6 +69,11 @@ public class VerLibros extends javax.swing.JInternalFrame {
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
         });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
 
         jLabel1.setText("Ver Libros Represados");
 
@@ -86,6 +91,12 @@ public class VerLibros extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(tblVerLibros);
 
         jLabel2.setText("Buscar por parte del titulo:");
+
+        txtParteTi.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtParteTiKeyTyped(evt);
+            }
+        });
 
         jButton1.setText("Buscar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -108,8 +119,8 @@ public class VerLibros extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtParteTi, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
+                        .addComponent(txtParteTi, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(29, Short.MAX_VALUE))
@@ -133,14 +144,40 @@ public class VerLibros extends javax.swing.JInternalFrame {
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
         // TODO add your handling code here:
+        this.limpiarTabla();
            cargarTabla();
     }//GEN-LAST:event_formInternalFrameActivated
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
+           LibrosControlador lc = new LibrosControlador();
+        ArrayList<Object[]> lista = lc.buscarPorNombre(txtParteTi.getText());
+        this.limpiarTabla();
+        for (Object[] Filas : lista) {
+            modelo.addRow(Filas);
+
+        }
+        tblVerLibros.setModel(modelo);
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        // TODO add your handling code here:
+         this.limpiarTabla();
+        cargarTabla();
+    }//GEN-LAST:event_formMouseClicked
+
+    private void txtParteTiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParteTiKeyTyped
+        // TODO add your handling code here:
+//        LibrosControlador lc = new LibrosControlador();
+//        ArrayList<Object[]> lista = lc.buscarPorNombre(txtParteTi.getText());
+//        this.limpiarTabla();
+//        for (Object[] Filas : lista) {
+//            modelo.addRow(Filas);
+//
+//        }
+//        tblVerLibros.setModel(modelo);
+    }//GEN-LAST:event_txtParteTiKeyTyped
 
 
      public void setModelo() {
@@ -190,8 +227,14 @@ public class VerLibros extends javax.swing.JInternalFrame {
     }
     
     
-    
-    
+        
+    public void limpiarTabla() {
+    int rowCount = modelo.getRowCount();
+    for (int i = rowCount - 1; i >= 0; i--) {
+        modelo.removeRow(i);
+    }
+}
+
     
     
     
