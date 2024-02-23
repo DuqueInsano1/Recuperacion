@@ -108,7 +108,9 @@ public class Menu extends javax.swing.JFrame {
 
     private void opVerLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opVerLibrosActionPerformed
         // TODO add your handling code here:
-        
+        VerLibros vl = new VerLibros();
+         Escritorio.add(vl);
+        vl.show();
     }//GEN-LAST:event_opVerLibrosActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
