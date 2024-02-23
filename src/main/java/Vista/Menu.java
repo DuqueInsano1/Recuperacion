@@ -67,6 +67,11 @@ public class Menu extends javax.swing.JFrame {
         jMenu1.add(opListaLibros);
 
         jMenuItem2.setText("Buscar Libro por parte de su titulo");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         opVerLibros.setText("Mostrar Libros represados");
@@ -105,6 +110,10 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_opVerLibrosActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
