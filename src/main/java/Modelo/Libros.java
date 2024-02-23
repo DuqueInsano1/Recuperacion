@@ -19,6 +19,12 @@ public class Libros {
    private String pais;
    private String fechaEdicion;
 
+    public Libros() {
+    }
+
+   
+   
+   
     public Libros(String titulo, Persona autor, String ISBN, int paginas, int edicion, String editorial, String ciudad, String pais, String fechaEdicion) {
         this.titulo = titulo;
         this.autor = autor;

@@ -19,7 +19,7 @@ public class Controlador {
             //Manera de Conexión a la Base de Datos
             Class.forName("com.mysql.cj.jdbc.Driver");
             //Parámetros de conexión url/usuario/clave en mysql
-            conexion=DriverManager.getConnection("jdbc:mysql://localhost/bddescuelafutbol2?autoReconnect=true&useSSL=false","root","24589790Br@yan");
+            conexion=DriverManager.getConnection("jdbc:mysql://localhost/bibliotecavisual?autoReconnect=true&useSSL=false","root","24589790Br@yan");
             System.out.println("CONECTADO"); 
         } catch (ClassNotFoundException | SQLException e)//CAPTURAR ERRORES 
         {

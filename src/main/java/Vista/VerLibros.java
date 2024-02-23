@@ -4,11 +4,16 @@
  */
 package Vista;
 
+import Controlador.LibrosControlador;
+import Modelo.Libros;
+import Modelo.Persona;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,13 +22,18 @@ import javax.swing.table.DefaultTableModel;
  * @author Belial
  */
 public class VerLibros extends javax.swing.JInternalFrame {
-DefaultTableModel modelo;
+    
+    ArrayList<Libros> listaLibros = new ArrayList<>();
+    DefaultTableModel modelo = new DefaultTableModel();
+
+
     /**
      * Creates new form VerLibros
      */
     public VerLibros() {
         initComponents();
-         setModelo();
+          setModelo();
+        cargarTabla();
     }
 
     
@@ -38,6 +48,10 @@ DefaultTableModel modelo;
         txtParteTi = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
                 formInternalFrameActivated(evt);
@@ -119,7 +133,7 @@ DefaultTableModel modelo;
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
         // TODO add your handling code here:
-           cargarDatosEnTabla();
+           cargarTabla();
     }//GEN-LAST:event_formInternalFrameActivated
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -129,40 +143,51 @@ DefaultTableModel modelo;
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
-    public void setModelo() {
-    modelo = new DefaultTableModel();
-    String[] cabecera = {"Título", "Autor", "ISBN", "Páginas", "Edición", "Editorial", "Ciudad", "País", "Fecha de Edición"};
-    modelo.setColumnIdentifiers(cabecera);
-    tblVerLibros.setModel(modelo);
-}
-    
-    
-    public void cargarDatosEnTabla() {
-    setModelo(); // Configurar el modelo de la tabla
-
-    try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotecavisual", "root", "24589790Br@yan");
-         CallableStatement stmt = conn.prepareCall("{CALL VerTodosLosLibros()}")) {
-
-        try (ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Object[] fila = {
-                    rs.getString("titulo"),
-                    rs.getString("autor"),
-                    rs.getString("ISBN"),
-                    rs.getInt("paginas"),
-                    rs.getInt("edicion"),
-                    rs.getString("editorial"),
-                    rs.getString("ciudad"),
-                    rs.getString("pais"),
-                    rs.getString("fecha_edicion")
-                };
-                modelo.addRow(fila);
-            }
-        }
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error al cargar los datos en la tabla: " + ex.getMessage());
+     public void setModelo() {
+        String[] cabecera = {"Título", "Nombre del Autor", "Apellido del Autor", "ISBN", "Páginas", "Edición", "Editorial", "Ciudad", "País", "Fecha de Edición"};
+        modelo.setColumnIdentifiers(cabecera);
+        tblVerLibros.setModel(modelo);
     }
+
+    
+    
+     private void setDatos() {
+
+        Object[] filas = new Object[modelo.getColumnCount()];
+        int contador = 1;
+        for (Libros datos : listaLibros) {
+
+            filas[0] = contador;
+            filas[1] = datos.getPais();
+            filas[2] = datos.getAutor().getNombres();
+            filas[3] = datos.getAutor().getApellidos();
+            filas[4] = datos.getISBN();
+            filas[5] = datos.getPaginas();
+            filas[6] = datos.getEdicion();
+            filas[7] = datos.getEditorial();
+            filas[8] = datos.getCiudad();
+            filas[9] = datos.getPais();
+            filas[10] = datos.getFechaEdicion();
+            
+
+            modelo.addRow(filas);
+            contador++;
+        }
+        tblVerLibros.setModel(modelo);
+    
+    
 }
+     
+ public void cargarTabla() {
+
+        LibrosControlador lc = new LibrosControlador();
+        ArrayList<Object[]> lista = lc.datosLibros();
+        for (Object[] Filas : lista) {
+            modelo.addRow(Filas);
+
+        }
+        tblVerLibros.setModel(modelo);
+    }
     
     
     

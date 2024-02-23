@@ -1,6 +1,7 @@
 Vista\Main.class
 Vista\ListaLibros$2.class
 Vista\ListaLibros$9.class
+Controlador\LibrosControlador.class
 Vista\Menu$3.class
 Vista\ListaLibros$10.class
 Vista\ListaLibros$14.class
