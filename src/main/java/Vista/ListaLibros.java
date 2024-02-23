@@ -61,8 +61,8 @@ public class ListaLibros extends javax.swing.JInternalFrame {
         jLabel13 = new javax.swing.JLabel();
         txtFechaEdi = new javax.swing.JTextField();
         btnAgregarLista = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCantidadLibros = new javax.swing.JButton();
+        btnEliminarLP = new javax.swing.JButton();
         btnInsertar = new javax.swing.JButton();
 
         setClosable(true);
@@ -167,12 +167,17 @@ public class ListaLibros extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton1.setText("Ver cuantos Libros ahi en la lista");
-
-        jButton2.setText("Eliminar libro de una posicion");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnCantidadLibros.setText("Ver cuantos Libros ahi en la lista");
+        btnCantidadLibros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnCantidadLibrosActionPerformed(evt);
+            }
+        });
+
+        btnEliminarLP.setText("Eliminar libro de una posicion");
+        btnEliminarLP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarLPActionPerformed(evt);
             }
         });
 
@@ -260,7 +265,7 @@ public class ListaLibros extends javax.swing.JInternalFrame {
                         .addGap(59, 59, 59)
                         .addComponent(btnInsertar)
                         .addGap(49, 49, 49)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEliminarLP, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,8 +273,8 @@ public class ListaLibros extends javax.swing.JInternalFrame {
                         .addGap(301, 301, 301)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(219, 219, 219)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(46, 46, 46)
+                        .addComponent(btnCantidadLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -311,11 +316,11 @@ public class ListaLibros extends javax.swing.JInternalFrame {
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregarLista, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminarLP, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(43, 43, 43))
+                .addGap(43, 43, 43)
+                .addComponent(btnCantidadLibros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(44, 44, 44))
         );
 
         pack();
@@ -371,19 +376,29 @@ public class ListaLibros extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCiudadActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnEliminarLPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarLPActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+      int posicion = obtenerPosicionDelLibroAEliminar();
+    if (posicion != -1) {
+        eliminarLibroDePosicion(posicion);
+    }
+    }//GEN-LAST:event_btnEliminarLPActionPerformed
 
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
         // TODO add your handling code here:
          insertarLibrosDesdeLista();
     }//GEN-LAST:event_btnInsertarActionPerformed
 
+    private void btnCantidadLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCantidadLibrosActionPerformed
+        // TODO add your handling code here:
+         mostrarCantidadLibrosEnLista();
+    }//GEN-LAST:event_btnCantidadLibrosActionPerformed
+
+    
     
       private void insertarLibrosDesdeLista() {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca_db", "usuario", "contraseña");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotecavisual", "root", "24589790Br@yan");
             for (Libros libro : listaLibros) {
                CallableStatement stmt = conn.prepareCall("{CALL InsertarLibro(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
                 stmt.setString(1, libro.getTitulo());
@@ -449,13 +464,36 @@ public class ListaLibros extends javax.swing.JInternalFrame {
     txtFechaEdi.setText("");
 }
     
+    private void mostrarCantidadLibrosEnLista() {
+    int cantidadLibros = listaLibros.size();
+    JOptionPane.showMessageDialog(null, "Cantidad de libros en la lista: " + cantidadLibros);
+}
+
+    private void eliminarLibroDePosicion(int posicion) {
+    if (posicion >= 0 && posicion < listaLibros.size()) {
+        listaLibros.remove(posicion);
+        JOptionPane.showMessageDialog(null, "Libro eliminado de la posición " + posicion + " de la lista.");
+    } else {
+        JOptionPane.showMessageDialog(null, "La posición especificada no es válida.");
+    }
+}
     
+    private int obtenerPosicionDelLibroAEliminar() {
+    String input = JOptionPane.showInputDialog("Ingrese la posición del libro que desea eliminar:");
+    try {
+        int posicion = Integer.parseInt(input);
+        return posicion;
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido para la posición.");
+        return -1; // Devolvemos -1 para indicar que no se pudo obtener una posición válida
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarLista;
+    private javax.swing.JButton btnCantidadLibros;
+    private javax.swing.JButton btnEliminarLP;
     private javax.swing.JButton btnInsertar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
